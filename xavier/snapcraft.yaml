@@ -1,4 +1,4 @@
-name: jetson-xavier-kernel
+name: aura-kernel-agx
 version: 4.9-tegra-l4t-r32.2.1
 summary: nvidia Jetson Xavier kernel
 description: nvidia Jetson Xavier kernel
@@ -30,7 +30,6 @@ parts:
       - libssl-dev
       - rsync
       - lzop
-      - gcc-aarch64-linux-gnu
       - jq
       - squashfs-tools
       - curl
@@ -39,13 +38,19 @@ parts:
   firmware:
     after: [ kernel ]
     plugin: nil
+    build-packages:
+            - unzip
     override-build: |
       set -xe
       wget https://developer.nvidia.com/embedded/dlc/r32-2-1_Release_v1.0/TX2-AGX/Tegra186_Linux_R32.2.1_aarch64.tbz2 \
         -O Tegra186_Linux_R32.2.1_aarch64.tbz2
       tar xf Tegra186_Linux_R32.2.1_aarch64.tbz2
       tar xf Linux_for_Tegra/nv_tegra/nvidia_drivers.tbz2 lib/firmware/
+      
+      unzip -o "${SNAPCRAFT_PROJECT_DIR}/firmware.zip" -d lib/firmware/
+      
       cd lib; cp -r firmware/ "$SNAPCRAFT_PART_INSTALL"
+
 
   waitrandom:
     source: ../waitrandom
@@ -69,6 +74,7 @@ parts:
     build-packages:
       - dpkg
       - wget
+      - dctrl-tools
     source: ../initramfs
     override-build: |
       set -ex
@@ -101,7 +107,7 @@ parts:
       FLASH_D=../../firmware/build/Linux_for_Tegra/bootloader
       mv $BOOT_IMG $FLASH_D
       cd $FLASH_D
-      ./tegraflash.py --chip 0x19 --key None --cmd "sign $BOOT_IMG"
+      #./tegraflash.py --chip 0x19 --key None --cmd "sign $BOOT_IMG"
       mv boot_sigheader.img.encrypt "$SNAPCRAFT_STAGE"/boot.img
     override-prime: |
       set -ex
