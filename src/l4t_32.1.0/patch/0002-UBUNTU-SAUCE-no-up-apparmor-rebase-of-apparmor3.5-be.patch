@@ -19,7 +19,6 @@ Signed-off-by: John Johansen <john.johansen@canonical.com>
 Signed-off-by: Leann Ogasawara <leann.ogasawara@canonical.com>
 Signed-off-by: Tim Gardner <tim.gardner@canonical.com>
 ---
- security/apparmor/.gitignore              |    1 +
  security/apparmor/Kconfig                 |   59 +-
  security/apparmor/Makefile                |   44 +-
  security/apparmor/af_unix.c               |  643 +++++++
@@ -81,17 +80,6 @@ Signed-off-by: Tim Gardner <tim.gardner@canonical.com>
  create mode 100644 security/apparmor/nulldfa.in
  create mode 100644 security/apparmor/policy_ns.c
 
-diff --git a/security/apparmor/.gitignore b/security/apparmor/.gitignore
-index 9cdec70d72b8..d5b291e94264 100644
---- a/security/apparmor/.gitignore
-+++ b/security/apparmor/.gitignore
-@@ -1,5 +1,6 @@
- #
- # Generated include files
- #
-+net_names.h
- capability_names.h
- rlim_names.h
 diff --git a/security/apparmor/Kconfig b/security/apparmor/Kconfig
 index be5e9414a295..ae38e60a5ac7 100644
 --- a/security/apparmor/Kconfig

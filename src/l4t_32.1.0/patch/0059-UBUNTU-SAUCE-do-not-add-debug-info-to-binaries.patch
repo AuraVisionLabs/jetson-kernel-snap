@@ -12,7 +12,7 @@ diff --git a/arch/arm64/configs/tegra_defconfig b/arch/arm64/configs/tegra_defco
 index 9fc976036694..fa6cbd5df0a8 100644
 --- a/arch/arm64/configs/tegra_defconfig
 +++ b/arch/arm64/configs/tegra_defconfig
-@@ -1078,7 +1078,6 @@ CONFIG_NLS_ISO8859_1=y
+@@ -1105,7 +1105,6 @@ CONFIG_NLS_ISO8859_1=y
  CONFIG_VIRTUALIZATION=y
  CONFIG_PRINTK_TIME=y
  CONFIG_DYNAMIC_DEBUG=y

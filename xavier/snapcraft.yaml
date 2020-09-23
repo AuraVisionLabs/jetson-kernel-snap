@@ -15,14 +15,29 @@ parts:
     override-pull: |
       snapcraftctl pull
       # Get kernel sources, which are distributed across different repos
-      mv l4t_32.2.1/source_sync.sh .
-      ./source_sync.sh -k tegra-l4t-r32.2.1
+      #mv l4t_32.2.1/source_sync.sh .
+      #./source_sync.sh -k tegra-l4t-r32.2.1
+
+      # Use auvidea kernel sources
+      tar xf "${SNAPCRAFT_PROJECT_DIR}/kernel_src_xavier_4_3_1-patched.tar.bz2"
+      mv kernel_src sources
+
+    override-build: |
+ 
       # Apply canonical patches - apparmor stuff essentially
       cd sources/kernel/kernel-4.9
+
+      # as auvidea sources are not a git repo we need to do this to apply the patches
+      git init
+      git add .
+      git commit -am "add files"
+
       # All 32.1.0 patches apply cleanly - still use them
       git am ../../../l4t_32.1.0/patch/*
-    override-build: |
+      cd -
+
       JETSON_KERNEL_CONFIG=tegra_defconfig ./build.sh
+
     build-packages:
       - lsb-release
       - bc
@@ -107,7 +122,7 @@ parts:
       FLASH_D=../../firmware/build/Linux_for_Tegra/bootloader
       mv $BOOT_IMG $FLASH_D
       cd $FLASH_D
-      #./tegraflash.py --chip 0x19 --key None --cmd "sign $BOOT_IMG"
+      ./tegraflash.py --chip 0x19 --key None --cmd "sign $BOOT_IMG"
       mv boot_sigheader.img.encrypt "$SNAPCRAFT_STAGE"/boot.img
     override-prime: |
       set -ex
